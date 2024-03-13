@@ -1,10 +1,10 @@
 // Database connection configuration
 const pgConfig = {
-  user: "postgres",
-  password: "tuan123456",
-  host: "localhost",
-  port: "5432",
-  database: "search-service",
+  user: process.env.DEV_USER || "postgres",
+  password: process.env.DEV_DB_PASSWORD || "tuan123456",
+  host: process.env.DEV_DB_HOST || "localhost",
+  port: process.env.DEV_DB_PORT || "5432",
+  database: process.env.DEV_DB_NAME || "search-service",
 };
 
 module.exports = pgConfig;
