@@ -17,9 +17,16 @@ app.use(
 );
 
 //init db
-require("./dbs/init.postgre");
+require("./dbs/init.postgres.lv0")
+  .connect()
+  .then(() => {
+    console.log("Connected to PostgreSQL database");
+  })
+  .catch((err) => {
+    console.error("Error connecting to PostgreSQL database", err);
+  });
 //init routes
-// app.use("", require("./routes"));
+app.use("", require("./routes"));
 //handle error
 app.use((req, res, next) => {
   const error = new Error("Not Found");
