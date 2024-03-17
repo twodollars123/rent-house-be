@@ -5,6 +5,8 @@ const {
   ForbiddenError,
   NotFoundError,
 } = require("../core/error.response");
+const { createTokenPair } = require("../auth/authUtils");
+const { getInforData } = require("../utils/index");
 
 const bcrypt = require("bcrypt");
 const crypto = require("crypto");
@@ -28,9 +30,26 @@ class AccessService {
         //generate privateKey, publicKey
         const publicKey = crypto.randomBytes(64).toString("hex");
         const privateKey = crypto.randomBytes(64).toString("hex");
-        //save key store
-
+        //save key store => khong hieu muc dich nen khong lam
         //generate token
+        const tokenPair = await createTokenPair(
+          { userId: newUser.user_id, email },
+          publicKey,
+          privateKey
+        );
+        if (_.isEmpty(tokenPair))
+          throw new AuthFailureError("generate token pair failure!");
+
+        return {
+          code: 201,
+          metadata: {
+            shop: getInforData({
+              fileds: ["user_id", "name", "email"],
+              object: newUser,
+            }),
+            tokenPair,
+          },
+        };
       }
 
       return {
