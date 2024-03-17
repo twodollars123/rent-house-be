@@ -8,7 +8,7 @@ class AccessRepo {
         values: [email],
       };
       const result = await client.query(query);
-      return result.rows;
+      return result.rows[0];
     } catch (error) {
       console.log(error);
     }
