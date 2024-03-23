@@ -9,7 +9,7 @@ const apiKey = async (req, res, next) => {
     const key = req.headers[HEADER.API_KEY]?.toString();
     if (!key) {
       return res.status(403).json({
-        message: "Forbidden Error",
+        message: "Forbidden Error: Can't find apiKey",
       });
     }
 
@@ -27,13 +27,12 @@ const apiKey = async (req, res, next) => {
 
 const permission = (permission) => {
   return (req, res, next) => {
-    if (!req.objKey.permissions) {
+    if (!req.objKey.permission) {
       return res.status(403).json({
         message: "permissions denied",
       });
     }
-    console.log(`permissions::`, req.objKey.permissions);
-    const validPermission = req.objKey.permissions.includes(permission);
+    const validPermission = req.objKey.permission == permission;
     if (!validPermission) {
       return res.status(403).json({
         message: "permissions denied",
