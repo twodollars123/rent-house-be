@@ -8,6 +8,13 @@ class ProductsController {
       metadata: await ProductsService.addNewProd(req.body),
     }).send(res);
   };
+
+  preview = async (req, res, next) => {
+    new OkResponse({
+      message: "ok",
+      metadata: await ProductsService.preview(req.params.id),
+    }).send(res);
+  };
 }
 
 module.exports = new ProductsController();

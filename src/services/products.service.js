@@ -14,6 +14,28 @@ class ProductsService {
       },
     };
   };
+
+  addOptions = async (id, payload) => {
+    const updatedId = await ProductsRepo.updateById(id, payload);
+    if (!updatedId) throw new BadRequestError("update prod failure!");
+    return {
+      code: 200,
+      metadata: {
+        updatedId,
+      },
+    };
+  };
+
+  preview = async (id) => {
+    const prod = await ProductsRepo.findOneAllProperty(id);
+    if (!prod) throw new NotFoundError("not found");
+    return {
+      code: 200,
+      metadata: {
+        prod,
+      },
+    };
+  };
 }
 
 module.exports = new ProductsService();
