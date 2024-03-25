@@ -64,32 +64,42 @@ class AccessService {
   };
 
   static login = async ({ email, password }) => {
-    //find user by email
-    const user = await accessRepo.getUserByEmail(email);
-    if (_.isEmpty(user)) throw NotFoundError("email not found!");
-    //match password
-    const matchPass = bcrypt.compare(password, user.password);
-    if (!matchPass) throw BadRequestError("Password is wrong!");
-    // created publicKey and privateKey
-    const publicKey = crypto.randomBytes(64).toString("hex");
-    const privateKey = crypto.randomBytes(64).toString("hex");
-    //generate token
-    const { user_id } = user;
-    const tokenPair = await createTokenPair(
-      { user_id, email },
-      publicKey,
-      privateKey
-    );
-    if (_.isEmpty(tokenPair))
-      throw new AuthFailureError("generate token pair failure!");
+    try {
+      //find user by email
+      const user = await accessRepo.getUserByEmail(email);
+      console.log("users:::", user);
+      if (_.isEmpty(user)) throw new NotFoundError("email not found!");
+      //match password
+      const matchPass = await bcrypt.compare(password, user.password);
+      console.log("match::", matchPass);
+      if (!matchPass) throw new BadRequestError("Password is wrong!");
+      // created publicKey and privateKey
+      const publicKey = crypto.randomBytes(64).toString("hex");
+      const privateKey = crypto.randomBytes(64).toString("hex");
+      //generate token
+      const { user_id } = user;
+      const tokenPair = await createTokenPair(
+        { user_id, email },
+        publicKey,
+        privateKey
+      );
+      if (_.isEmpty(tokenPair))
+        throw new AuthFailureError("generate token pair failure!");
 
-    return {
-      shop: getInforData({
-        fileds: ["user_id", "name", "email"],
-        object: user,
-      }),
-      tokenPair,
-    };
+      return {
+        shop: getInforData({
+          fileds: ["user_id", "name", "email"],
+          object: user,
+        }),
+        tokenPair,
+      };
+    } catch (error) {
+      return {
+        code: "xxx",
+        message: error.message,
+        status: error.status,
+      };
+    }
   };
 }
 
