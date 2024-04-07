@@ -15,6 +15,20 @@ class ProductsController {
       metadata: await ProductsService.preview(req.params.id),
     }).send(res);
   };
+
+  getAll = async (req, res, next) => {
+    new OkResponse({
+      message: "get all prod ok",
+      metadata: await ProductsService.getAll(),
+    }).send(res);
+  };
+
+  getLimit = async (req, res, next) => {
+    new OkResponse({
+      message: "get prod ok",
+      metadata: await ProductsService.getLimit(req.query),
+    }).send(res);
+  };
 }
 
 module.exports = new ProductsController();

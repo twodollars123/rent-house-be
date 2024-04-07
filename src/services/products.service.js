@@ -27,12 +27,39 @@ class ProductsService {
   };
 
   preview = async (id) => {
-    const prod = await ProductsRepo.findOneAllProperty(id);
+    const prod = await ProductsRepo.findOneById(id);
     if (!prod) throw new NotFoundError("not found");
     return {
       code: 200,
       metadata: {
         prod,
+      },
+    };
+  };
+
+  getAll = async () => {
+    const allProd = await ProductsRepo.findAll();
+    if (!allProd) {
+      // throw new NotFoundError("khong co prod nao!");
+      return {
+        code: 500,
+      };
+    }
+    return {
+      code: 200,
+      metadata: {
+        allProd,
+      },
+    };
+  };
+
+  getLimit = async (params) => {
+    const { page, itemsPerPage } = params;
+    const data = await ProductsRepo.findLimit(page, itemsPerPage);
+    return {
+      code: 200,
+      metadata: {
+        data,
       },
     };
   };

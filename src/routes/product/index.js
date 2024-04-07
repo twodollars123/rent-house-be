@@ -4,7 +4,9 @@ const ThumbnailsController = require("../../controllers/thumbnails.controller");
 const upload = require("../../utils/uploadFile");
 
 Router.post("/prod/add_prod", productsController.addNewProd);
-Router.get("/prod/:id", productsController.preview);
+Router.get("/prod/all", productsController.getAll);
+Router.get("/prod/preview/:id", productsController.preview);
+Router.get("/prod", productsController.getLimit);
 
 Router.use(
   "/prod/:prod_id/add_thumb",

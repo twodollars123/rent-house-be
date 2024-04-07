@@ -1,3 +1,4 @@
+const { values } = require("lodash");
 const client = require("../dbs/init.postgres.lv0");
 
 class ProductsRepo {
@@ -55,6 +56,7 @@ class ProductsRepo {
       values: [id],
     };
     const res = (await client.query(query)).rows;
+    console.log("res", res);
     return res;
   };
 
@@ -84,6 +86,26 @@ class ProductsRepo {
     };
     const updatedId = await client.query(query).rows[0].id;
     return updatedId;
+  };
+
+  findAll = async () => {
+    const query = {
+      text: "select * from products",
+      values: [],
+    };
+    const res = await client.query(query);
+    return res.rows;
+  };
+
+  findLimit = async (page, itemsPerPage) => {
+    const offset = (page - 1) * itemsPerPage || 0;
+    const limit = itemsPerPage || 10;
+    const query = {
+      text: "select * from products order by id limit $1 offset $2",
+      values: [limit, offset],
+    };
+    const res = await client.query(query);
+    return res.rows;
   };
 }
 
