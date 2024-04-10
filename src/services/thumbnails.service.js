@@ -8,6 +8,7 @@ const ThumbnailsRepo = require("../entity/thumbnails.repo");
 
 class ThumbnailsService {
   addThumbnail = async (payload) => {
+    console.log("thumbnail", payload);
     const { alt, prod_id } = payload.body;
     const file = payload.file;
     const newThumb_id = await ThumbnailsRepo.addThumb(

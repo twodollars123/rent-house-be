@@ -9,7 +9,7 @@ Router.get("/prod/preview/:id", productsController.preview);
 Router.get("/prod", productsController.getLimit);
 
 Router.use(
-  "/prod/:prod_id/add_thumb",
+  "/prod/add_thumb",
   upload.single("url"),
   ThumbnailsController.addThumbnail
 );

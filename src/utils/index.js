@@ -1,13 +1,15 @@
 const _ = require("lodash");
 const NodeGeocoder = require("node-geocoder");
 const openGeocoder = require("node-open-geocoder");
+// var geocoder = require("geocoder");
 
-const options = {
+// const opencage = require("opencage-api-client");
+// OPENCAGE_API_KEY=3b1158a4ed084125afb2f6d49e6fd
+
+var geocoder = NodeGeocoder({
   provider: "opencage",
-  apiKey: "YOUR-API-KEY",
-};
-
-const geocoder = NodeGeocoder(options);
+  apiKey: "3b1158a4ed084125afb2f6d49e6fd",
+});
 
 const getInforData = ({ fileds = [], object = {} }) => {
   return _.pick(object, fileds);
@@ -15,12 +17,10 @@ const getInforData = ({ fileds = [], object = {} }) => {
 
 const to_geo_point = async (address) => {
   console.log("geo_point_address::", address);
-
-  const result = await geocoder.geocode("29 champs elysée paris");
-
-  console.log("geo_point::", result);
+  let a;
+  // console.log("geo_point::", res);
   //   result = res[0].lat + ", " + res[0].lon;
-  return result;
+  return a;
 };
 
 module.exports = {
