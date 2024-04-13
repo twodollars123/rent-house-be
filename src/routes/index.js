@@ -4,6 +4,7 @@ const router = express.Router();
 
 const accessRouter = require("./access");
 const productRouter = require("./product");
+const commentsRouter = require("./comments");
 const { apiKey, permission } = require("../auth/checkAuth");
 
 //check apikey
@@ -13,5 +14,6 @@ router.use(permission("1111"));
 
 router.use("/v1/api", accessRouter);
 router.use("/v1/api", productRouter);
+router.use("/v1/api", commentsRouter);
 
 module.exports = router;
