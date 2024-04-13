@@ -58,7 +58,8 @@ class CommentsService {
     const { cmt_prodId, cmt_id } = payload;
     // check prodId co cmt khong
     const listCmt = await commentsRepo.findAllByProdId(cmt_prodId);
-    if (!listCmt) throw NotFoundError("post does not have any comments yet");
+    if (!listCmt || listCmt.length === 0)
+      throw new NotFoundError("post does not have any comments yet");
     //lay left right
     const cmt = await commentsRepo.findOneById(cmt_id);
     if (!cmt) throw new NotFoundError("cmt is not exist");
