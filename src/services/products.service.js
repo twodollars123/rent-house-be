@@ -1,6 +1,6 @@
 const { BadRequestError, NotFoundError } = require("../core/error.response");
 const ProductsRepo = require("../entity/products.repo");
-const { to_geo_point } = require("../utils");
+const notificationsService = require("./notifications.service");
 
 class ProductsService {
   addNewProd = async (payload) => {
@@ -8,6 +8,10 @@ class ProductsService {
     if (!newProdId) throw new NotFoundError("created failure!");
     const newProd = await ProductsRepo.findOneById(newProdId);
     if (!newProd) throw new NotFoundError("not found!");
+    await notificationsService.createNoti({
+      noti_typeId: 1,
+      noti_senderId: payload.author_id,
+    });
     return {
       code: 201,
       metadata: {
