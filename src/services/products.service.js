@@ -8,10 +8,10 @@ class ProductsService {
     if (!newProdId) throw new NotFoundError("created failure!");
     const newProd = await ProductsRepo.findOneById(newProdId);
     if (!newProd) throw new NotFoundError("not found!");
-    await notificationsService.createNoti({
-      noti_typeId: 1,
-      noti_senderId: payload.author_id,
-    });
+    // await notificationsService.createNoti({
+    //   noti_typeId: 1,
+    //   noti_senderId: payload.author_id,
+    // });
     return {
       code: 201,
       metadata: {
@@ -62,10 +62,12 @@ class ProductsService {
   getLimit = async (params) => {
     const { page, itemsPerPage } = params;
     const data = await ProductsRepo.findLimit(page, itemsPerPage);
+    const totalItems = await ProductsRepo.getTotalAmount();
     return {
       code: 200,
       metadata: {
         data,
+        totalItems,
       },
     };
   };

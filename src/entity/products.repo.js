@@ -3,6 +3,7 @@ const client = require("../dbs/init.postgres.lv0");
 
 class ProductsRepo {
   createOne = async (payload) => {
+    console.log(payload);
     const {
       caption,
       address,
@@ -15,10 +16,14 @@ class ProductsRepo {
       electricity_price,
       water_price,
       parking,
+      methodPayment,
+      maximumMember,
+      room_price,
+      cleaningFee,
     } = payload;
 
     const query = {
-      text: "insert into products (caption,address,geo_point,author_id,bed,wardrobe,kitchen,closed_toilet,electricity_price,water_price,parking) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) returning id",
+      text: "insert into products (caption,address,geo_point,author_id,bed,wardrobe,kitchen,closed_toilet,electricity_price,water_price,parking, method_payment, max_member, romm_price,cleaning_fee) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15) returning id",
       values: [
         caption,
         address,
@@ -31,6 +36,10 @@ class ProductsRepo {
         electricity_price,
         water_price,
         parking,
+        methodPayment.value,
+        maximumMember,
+        room_price,
+        cleaningFee,
       ],
     };
 
@@ -106,6 +115,15 @@ class ProductsRepo {
     };
     const res = await client.query(query);
     return res.rows;
+  };
+
+  getTotalAmount = async () => {
+    const query = {
+      text: "select count(id) as total from products p",
+      values: [],
+    };
+    const res = await client.query(query);
+    return res.rows[0].total;
   };
 }
 

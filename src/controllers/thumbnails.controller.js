@@ -15,6 +15,13 @@ class ThumbnailsController {
       }),
     }).send(res);
   };
+
+  getThumbs = async (req, res, next) => {
+    new SuccessResponse({
+      message: "get list thumbs",
+      metadata: await ThumbnailsService.getThumbsByProdId(req.params.id),
+    }).send(res);
+  };
 }
 
 module.exports = new ThumbnailsController();
