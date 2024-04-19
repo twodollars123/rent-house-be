@@ -4,29 +4,43 @@ const _ = require("lodash");
 
 class CommentsService {
   createOne = async (payload) => {
-    const { cmt_parentId, ...others } = payload;
+    const { cmt_parentId, cmt_prodId, cmt_content, cmt_userId } = payload;
+    console.log("payload", payload);
     let rightvalue;
     if (cmt_parentId != null) {
       const parentComment = await commentsRepo.findOneById(cmt_parentId);
+      console.log("parentComment", parentComment);
       if (!parentComment) throw new NotFoundError("not found parent comment");
       rightvalue = parentComment.cmt_right;
       //update cmt that it's cmt_right >= rightvalue
-      const updatedCmtRight = await commentsRepo.updateCmtRight(rightvalue, 2);
+      const updatedCmtRight = await commentsRepo.updateCmtRight(
+        rightvalue,
+        2,
+        cmt_prodId
+      );
       //update cmt that it's cmt_left > rightvalue
-      const updatedCmtLeft = await commentsRepo.updateCmtLeft(rightvalue, 2);
+      const updatedCmtLeft = await commentsRepo.updateCmtLeft(
+        rightvalue,
+        2,
+        cmt_prodId
+      );
     } else {
-      rightvalue = await commentsRepo.findMaxRight();
+      console.log("rv");
+      rightvalue = await commentsRepo.findMaxRight(cmt_prodId);
+      console.log("rv", rightvalue);
       if (!rightvalue) {
         rightvalue = 1;
       } else {
-        rightvalue = rightvalue + 1;
+        rightvalue = rightvalue.cmt_right + 1;
       }
     }
 
     const cmt_right = rightvalue + 1;
     const cmt_left = rightvalue;
     const params = {
-      ...others,
+      cmt_prodId,
+      cmt_content,
+      cmt_userId,
       cmt_parentId,
       cmt_left,
       cmt_right,
@@ -47,7 +61,15 @@ class CommentsService {
   };
 
   getCmtReply = async (id) => {
-    const listReplyCmts = await commentsRepo.findAllReplyCmtById(id);
+    const parentCmt = await commentsRepo.findOneById(id);
+    if (!parentCmt) throw new NotFoundError("not found cmt parent");
+    const { cmt_left, cmt_right, cmt_prodid } = parentCmt;
+    console.log("parent", parentCmt);
+    const listReplyCmts = await commentsRepo.findReplyCmt(
+      cmt_left,
+      cmt_right,
+      cmt_prodid
+    );
     if (!listReplyCmts) throw new NotFoundError("not found list reply cmt");
     return {
       listReplyCmts,
