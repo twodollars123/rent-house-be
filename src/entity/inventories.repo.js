@@ -1,9 +1,7 @@
 const client = require("../dbs/init.postgres.lv0");
 
 class InventoriesRepo {
-  createOne = async (params, body) => {
-    const prod_id = params;
-    const { in_stock_quantity } = body;
+  createOne = async (prod_id, in_stock_quantity) => {
     const query = {
       text: "insert into inventories (prod_id, in_stock_quantity) values ($1, $2) returning inven_id",
       values: [prod_id, in_stock_quantity],
