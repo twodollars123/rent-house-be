@@ -1,11 +1,13 @@
 const amqp = require("amqplib");
 
-const log = console.log;
-console.log = function () {
-  log.apply(console, [new Date()].concat(arguments));
-};
-const runProducer = async () => {
+// const log = console.log;
+// console.log = function () {
+//   log.apply(console, [new Date()].concat(arguments));
+// };
+const runProducer = async (payload) => {
   try {
+    const { message } = payload;
+
     const connection = await amqp.connect("amqp://guest:12345@localhost");
     const channel = await connection.createChannel();
 
@@ -27,21 +29,27 @@ const runProducer = async () => {
     //3. bindQueue
     await channel.bindQueue(queueResult.queue, notificationExchange);
     //4. send message to consumer
-    const message = "test 1: Vua moi cap nhat thong tin moi";
+    // const message = "test 1: Vua moi cap nhat thong tin moi";
     console.log("message:::", message);
-    channel.sendToQueue(queueResult.queue, Buffer.from(message), {
-      expiration: "10000",
-    });
+    channel.sendToQueue(
+      queueResult.queue,
+      Buffer.from(JSON.stringify(message)),
+      {
+        expiration: "5000",
+      }
+    );
 
     setTimeout(() => {
       connection.close();
-      process.exit(0);
+      // process.exit(0);
     }, 500);
   } catch (error) {
     console.log("err in runnProducer::", error);
   }
 };
 
-runProducer()
-  .then((rs) => console.log(rs))
-  .catch(console.error);
+// runProducer()
+//   .then((rs) => console.log(rs))
+//   .catch(console.error);
+
+module.exports = runProducer;

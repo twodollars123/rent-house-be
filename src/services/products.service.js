@@ -1,6 +1,7 @@
 const { BadRequestError, NotFoundError } = require("../core/error.response");
 const ProductsRepo = require("../entity/products.repo");
 const notificationsService = require("./notifications.service");
+const producerDLX = require("../tests/rabbitmq/producerDLX");
 
 class ProductsService {
   addNewProd = async (payload) => {
@@ -8,10 +9,17 @@ class ProductsService {
     if (!newProdId) throw new NotFoundError("created failure!");
     const newProd = await ProductsRepo.findOneById(newProdId);
     if (!newProd) throw new NotFoundError("not found!");
-    // await notificationsService.createNoti({
-    //   noti_typeId: 1,
-    //   noti_senderId: payload.author_id,
-    // });
+    const newNoti = await notificationsService.createNoti({
+      noti_typeId: 1,
+      noti_senderId: payload.author_id,
+    });
+    if (!newNoti)
+      throw new BadRequestError(
+        "create noti fail check createNoti in productservice"
+      );
+    await producerDLX({ message: newNoti })
+      .then((rs) => console.log("rs::", rs))
+      .catch(console.error);
     return {
       code: 201,
       metadata: {

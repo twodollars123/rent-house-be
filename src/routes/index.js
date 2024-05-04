@@ -8,6 +8,7 @@ const commentsRouter = require("./comments");
 const userRouter = require("./users");
 const invenRouter = require("./inventories");
 const methodPaymentsRouter = require("./methodPayments");
+const notiRouter = require("./notification");
 const { apiKey, permission } = require("../auth/checkAuth");
 
 //check apikey
@@ -21,5 +22,6 @@ router.use("/v1/api", commentsRouter);
 router.use("/v1/api", userRouter);
 router.use("/v1/api", invenRouter);
 router.use("/v1/api", methodPaymentsRouter);
+router.use("/v1/api", notiRouter);
 
 module.exports = router;
