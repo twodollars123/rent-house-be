@@ -36,6 +36,14 @@ class NotificationsService {
     if (!listNoti) throw new NotFoundError("khong co noti nao");
     return { listNoti };
   };
+
+  markSeenNoti = async (payload) => {
+    const { noti_receivedId } = payload;
+    const markedSeen = await notiReceivedRepo.updateStatus(noti_receivedId);
+    if (!markedSeen)
+      throw new BadRequestError("updated status noti receive fail");
+    return { markedSeen };
+  };
 }
 
 module.exports = new NotificationsService();

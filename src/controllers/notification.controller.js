@@ -8,6 +8,13 @@ class NotificationsController {
       metadata: await notiService.getAllNotiByUserId(req.body),
     }).send(res);
   };
+
+  updateStatusNoti = async (req, res, next) => {
+    new OkResponse({
+      message: "update status noti success",
+      metadata: await notiService.markSeenNoti(req.body),
+    }).send(res);
+  };
 }
 
 module.exports = new NotificationsController();

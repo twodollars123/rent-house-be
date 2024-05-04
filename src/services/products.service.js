@@ -17,7 +17,7 @@ class ProductsService {
       throw new BadRequestError(
         "create noti fail check createNoti in productservice"
       );
-    await producerDLX({ message: newNoti })
+    await producerDLX({ message: { newNoti } })
       .then((rs) => console.log("rs::", rs))
       .catch(console.error);
     return {

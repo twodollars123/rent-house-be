@@ -19,6 +19,17 @@ class NotiReceivedRepo {
     const listNoti = (await client.query(query)).rows;
     return listNoti;
   };
+
+  updateStatus = async (noti_receivedId) => {
+    const query = {
+      text: " update noti_received set status = 1 where noti_receivedId = $1 returning noti_receivedId",
+      values: [noti_receivedId],
+    };
+
+    const updatedId = (await client.query(query)).rows[0].noti_receivedid;
+    console.log("updateStatus noti::", updatedId);
+    return updatedId;
+  };
 }
 
 module.exports = new NotiReceivedRepo();

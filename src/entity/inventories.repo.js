@@ -1,3 +1,4 @@
+const { values } = require("lodash");
 const client = require("../dbs/init.postgres.lv0");
 
 class InventoriesRepo {
@@ -16,7 +17,18 @@ class InventoriesRepo {
       values: [valueChange, prodId],
     };
     const res = await client.query(query);
+    console.log("res:::", res);
     return res;
+  };
+
+  findOneByProdId = async (prodId) => {
+    const query = {
+      text: "select * from inventories where prod_id = $1",
+      values: [prodId],
+    };
+
+    const found = (await client.query(query)).rows[0];
+    return found;
   };
 }
 
