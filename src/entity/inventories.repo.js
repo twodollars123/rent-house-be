@@ -1,4 +1,3 @@
-const { values } = require("lodash");
 const client = require("../dbs/init.postgres.lv0");
 
 class InventoriesRepo {

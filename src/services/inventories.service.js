@@ -16,6 +16,14 @@ class InventoriesService {
       newInven,
     };
   };
+
+  getInStockQuantity = async (body) => {
+    const prodId = body;
+    const foundInven = await InventoriesRepo.findOneByProdId(prodId);
+    if (!foundInven)
+      throw new BadRequestError("get in stock quatity by prodid fail");
+    return { foundInven };
+  };
 }
 
 module.exports = new InventoriesService();

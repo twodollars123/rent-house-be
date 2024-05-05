@@ -6,5 +6,9 @@ Router.post(
   "/methodpayments/add",
   asyncHandler(methodPaymentsController.addMapping)
 );
+Router.get(
+  "/methodpayments/getinfo/:prodid",
+  asyncHandler(methodPaymentsController.getInfoPaymentMethod)
+);
 
 module.exports = Router;

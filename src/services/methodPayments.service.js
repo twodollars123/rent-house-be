@@ -20,6 +20,18 @@ class MethodPaymentsService {
       newMapping,
     };
   };
+
+  getInfoMethodPayment = async (body) => {
+    const prodid = body;
+    const foundProd = await ProductsRepo.findOneById(prodid);
+    if (!foundProd)
+      throw new NotFoundError(
+        "add new mappping method-prod fail, check find prod by id"
+      );
+    const info = await MethodPaymentsRepo.getInfo(prodid);
+    if (!info) throw new BadRequestError("get info payment method fail");
+    return { info };
+  };
 }
 
 module.exports = new MethodPaymentsService();

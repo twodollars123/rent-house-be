@@ -9,6 +9,13 @@ class InventoriesControllers {
       metadata: await InventoriesService.addInitInven(req.body),
     }).send(res);
   };
+
+  getInStock = async (req, res, next) => {
+    new OkResponse({
+      message: "get inventory success",
+      metadata: await InventoriesService.getInStockQuantity(req.params.prodid),
+    }).send(res);
+  };
 }
 
 module.exports = new InventoriesControllers();

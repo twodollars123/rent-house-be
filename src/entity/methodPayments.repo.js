@@ -18,6 +18,15 @@ class MethodPayments {
     const checked = (await client.query(query)).rows[0];
     return checked;
   };
+
+  getInfo = async (prodid) => {
+    const query = {
+      text: "select * from method_payments mp inner join method_payments_prod mpp on mp.mp_id  = mpp.mp_id where mpp.prod_id = $1",
+      values: [prodid],
+    };
+    const info = (await client.query(query)).rows[0];
+    return info;
+  };
 }
 
 module.exports = new MethodPayments();
