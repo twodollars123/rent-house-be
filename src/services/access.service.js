@@ -13,17 +13,21 @@ const crypto = require("crypto");
 const _ = require("lodash");
 class AccessService {
   static signUp = async (body) => {
+    console.log("body:::", body);
     const { email, name, password } = body;
     try {
       //check email exist???
       const existEmail = await accessRepo.getUserByEmail(email);
+      console.log("exist email::", existEmail);
       if (!_.isEmpty(existEmail)) {
         throw new BadRequestError("Error:: Email already registered!");
       }
       //hash password
       const passwordHash = await bcrypt.hash(password, 10);
+      console.log("hash pss:::", passwordHash);
       //create new user
       const newUser = await accessRepo.createNewUser(email, name, passwordHash);
+      console.log("newUser:::", newUser);
       if (newUser) {
         //generate privateKey, publicKey
         const publicKey = crypto.randomBytes(64).toString("hex");

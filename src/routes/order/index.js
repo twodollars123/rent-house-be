@@ -12,4 +12,11 @@ Router.post(
   asyncHandler(orderController.getAllHistoryUpdated)
 );
 
+Router.post(
+  "/order/getHistoryRequest",
+  asyncHandler(orderController.getHistoryRequest)
+);
+
+Router.post("/order/getRequest", asyncHandler(orderController.getRequest));
+
 module.exports = Router;

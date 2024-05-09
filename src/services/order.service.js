@@ -42,6 +42,24 @@ class OrderService {
     return { listorder };
   };
 
+  getHistoryByUserId = async (payload) => {
+    const { userId } = payload;
+    const checkedOwnerId = await userRepo.findOne(userId);
+    if (!checkedOwnerId) throw new NotFoundError("id chu phong khong ton tai");
+    const listHistory = await orderRepo.getHistoryByUserId(userId);
+    if (!listHistory) throw new BadRequestError("get list history fail");
+    return listHistory;
+  };
+
+  getListRequest = async (payload) => {
+    const { userId } = payload;
+    const checkedOwnerId = await userRepo.findOne(userId);
+    if (!checkedOwnerId) throw new NotFoundError("id chu phong khong ton tai");
+    const listRequest = await orderRepo.getRequestByUserId(userId);
+    if (!listRequest) throw new BadRequestError("get list request fail");
+    return listRequest;
+  };
+
   updateStatus = async (payload) => {
     const { processId, status } = payload;
     const updatedResult = await orderRepo.updateOne(processId, status);

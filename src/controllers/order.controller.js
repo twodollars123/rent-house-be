@@ -17,6 +17,20 @@ class OrderController {
     }).send(res);
   };
 
+  getHistoryRequest = async (req, res, next) => {
+    new OkResponse({
+      message: "get list history order success",
+      metadata: await orderService.getHistoryByUserId(req.body),
+    }).send(res);
+  };
+
+  getRequest = async (req, res, next) => {
+    new OkResponse({
+      message: "get list request order success",
+      metadata: await orderService.getListRequest(req.body),
+    }).send(res);
+  };
+
   getAllHistoryUpdated = async (req, res, next) => {
     new OkResponse({
       message: "get list order success",

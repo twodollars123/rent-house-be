@@ -21,6 +21,25 @@ class OrderRepo {
     return listHistory;
   };
 
+  getHistoryByUserId = async (userID) => {
+    const query = {
+      text: "select * from processing p inner join process_status ps on p.status = ps.process_status_id where p.owner_id = $1 and p.status in (3, 4)",
+      values: [userID],
+    };
+
+    const listHistory = (await client.query(query)).rows;
+    return listHistory;
+  };
+
+  getRequestByUserId = async (userId) => {
+    const query = {
+      text: "select * from processing p inner join process_status ps on p.status = ps.process_status_id where p.owner_id = $1 and p.status = 1",
+      values: [userId],
+    };
+    const listRequest = (await client.query(query)).rows;
+    return listRequest;
+  };
+
   updateOne = async (processId, status) => {
     const query = {
       text: "update processing set status = $1 where process_id = $2 returning process_id",
