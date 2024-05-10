@@ -48,6 +48,7 @@ class OrderService {
     if (!checkedOwnerId) throw new NotFoundError("id chu phong khong ton tai");
     const listHistory = await orderRepo.getHistoryByUserId(userId);
     if (!listHistory) throw new BadRequestError("get list history fail");
+    console.log("list request:::", listHistory);
     return listHistory;
   };
 

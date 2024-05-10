@@ -23,7 +23,7 @@ class OrderRepo {
 
   getHistoryByUserId = async (userID) => {
     const query = {
-      text: "select * from processing p inner join process_status ps on p.status = ps.process_status_id where p.owner_id = $1 and p.status in (3, 4)",
+      text: "select p.process_id , p.owner_id , p.renter_id , p.prod_id ,p.proc_createdat , p.proc_updatedat , ps.process_status_name , u.name as rented_name, p2.address as prod_address, p2.romm_price as price_room from processing p inner join process_status ps on p.status = ps.process_status_id inner join users u on p.renter_id = u.user_id inner join products p2 on p.prod_id = p2.id where p.owner_id = $1 and p.status in (3, 4)",
       values: [userID],
     };
 
@@ -33,7 +33,7 @@ class OrderRepo {
 
   getRequestByUserId = async (userId) => {
     const query = {
-      text: "select * from processing p inner join process_status ps on p.status = ps.process_status_id where p.owner_id = $1 and p.status = 1",
+      text: "select p.process_id , p.owner_id , p.renter_id , p.prod_id ,p.proc_createdat , p.proc_updatedat , ps.process_status_name , u.name as rented_name, p2.address as prod_address, p2.romm_price as price_room from processing p inner join process_status ps on p.status = ps.process_status_id inner join users u on p.renter_id = u.user_id inner join products p2 on p.prod_id = p2.id where p.owner_id = $1 and p.status = 1",
       values: [userId],
     };
     const listRequest = (await client.query(query)).rows;
