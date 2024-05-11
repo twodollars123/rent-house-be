@@ -7,6 +7,16 @@ class UsersService {
     if (!user) throw new NotFoundError("khong tim thay user");
     return user;
   };
+
+  getListAccount = async () => {
+    const listAccount = await UserRepo.getAllUserWithoutAdmin();
+    if (!listAccount) throw new NotFoundError("Khong co user nao");
+    return listAccount;
+  };
+
+  // updateInfo = async () => {
+  //   const
+  // }
 }
 
 module.exports = new UsersService();

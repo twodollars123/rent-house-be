@@ -9,6 +9,16 @@ class UserRepo {
     const user = (await client.query(query)).rows[0];
     return user;
   };
+
+  getAllUserWithoutAdmin = async () => {
+    const query = {
+      text: "select * from users u where u.user_role != 1",
+      values: [],
+    };
+
+    const listAccount = (await client.query(query)).rows;
+    return listAccount;
+  };
 }
 
 module.exports = new UserRepo();
